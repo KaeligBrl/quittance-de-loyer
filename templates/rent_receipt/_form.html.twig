@@ -1,0 +1,53 @@
+{{ form_start(form) }}
+    <div class="form-info" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:.875rem;color:var(--text-muted)">
+        🔢 Le numéro de quittance sera généré automatiquement à l'enregistrement.
+    </div>
+    {{ form_row(form.tenant) }}
+    {{ form_row(form.periodStart) }}
+    {{ form_row(form.periodEnd) }}
+    {% if form.amount is defined %}
+        {{ form_row(form.amount) }}
+    {% else %}
+        <div id="amount-preview" style="border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:.875rem;background:#f0fdf4;border:1px solid #86efac;color:#166534">
+            💡 Sélectionnez un locataire pour voir le montant calculé.
+        </div>
+    {% endif %}
+    {{ form_row(form.issuedAt) }}
+    <button class="btn">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}
+
+{% if tenant_amounts is defined %}
+<script>
+(function(){
+    var amounts = {{ tenant_amounts|json_encode|raw }};
+    var sel = document.querySelector('[name$="[tenant]"]');
+    var preview = document.getElementById('amount-preview');
+    if (!sel || !preview) return;
+
+    function update() {
+        var id = sel.value;
+        var data = amounts[id];
+        if (!id || !data || data.total === null) {
+            preview.style.background = '#f0fdf4';
+            preview.style.borderColor = '#86efac';
+            preview.style.color = '#166534';
+            preview.innerHTML = '💡 Sélectionnez un locataire pour voir le montant calculé.';
+            return;
+        }
+        var html = '💶 <strong>Montant calculé : ' + parseFloat(data.total).toFixed(2) + ' €</strong>';
+        if (data.property) html += ' <span style="opacity:.7">· ' + data.property + '</span>';
+        html += '<br><span style="opacity:.7;font-size:.8rem">';
+        if (data.rent) html += 'Loyer HC : ' + parseFloat(data.rent).toFixed(2) + ' €';
+        if (data.charges) html += ' + Charges : ' + parseFloat(data.charges).toFixed(2) + ' €';
+        html += '</span>';
+        preview.style.background = '#eff6ff';
+        preview.style.borderColor = '#93c5fd';
+        preview.style.color = '#1e40af';
+        preview.innerHTML = html;
+    }
+
+    sel.addEventListener('change', update);
+    update();
+})();
+</script>
+{% endif %}

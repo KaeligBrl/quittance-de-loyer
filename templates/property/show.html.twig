@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block card_open %}{% endblock %}
+{% block card_close %}{% endblock %}
+{% block title %}{{ property.title }}{% endblock %}
+{% block body %}
+    <div class="dashboard-header">
+        <div>
+            <h1>{{ property.title }}</h1>
+            <p class="dashboard-sub">{{ property.typeLabel }}{% if property.city %} — {{ property.city }}{% endif %}</p>
+        </div>
+        <div class="page-actions">
+            <a href="{{ path('app_property_index') }}" class="btn-sm">← Retour</a>
+            <a href="{{ path('app_property_edit', {'id': property.id}) }}" class="btn">Modifier</a>
+            {{ include('property/_delete_form.html.twig') }}
+        </div>
+    </div>
+    <div class="card">
+    <dl class="detail-grid">
+        <div class="detail-row"><dt>Type</dt><dd>{{ property.typeLabel }}</dd></div>
+        <div class="detail-row"><dt>Adresse</dt><dd>{{ property.address ?: '—' }}</dd></div>
+        <div class="detail-row"><dt>Ville</dt><dd>{{ property.city ?: '—' }}</dd></div>
+        <div class="detail-row"><dt>Code postal</dt><dd>{{ property.zipcode ?: '—' }}</dd></div>
+        <div class="detail-row"><dt>Surface</dt><dd>{% if property.surface %}{{ property.surface }} m²{% else %}—{% endif %}</dd></div>
+        <div class="detail-row"><dt>Loyer HC</dt><dd>{% if property.rentAmount %}<strong>{{ property.rentAmount }} €</strong>{% else %}—{% endif %}</dd></div>
+        <div class="detail-row"><dt>Charges</dt><dd>{% if property.chargesAmount %}{{ property.chargesAmount }} €{% else %}—{% endif %}</dd></div>
+        <div class="detail-row"><dt>Loyer CC</dt><dd>{% if property.totalRent %}<strong style="color:var(--primary)">{{ property.totalRent }} €</strong>{% else %}—{% endif %}</dd></div>
+    </dl>
+    </div>
+{% endblock %}

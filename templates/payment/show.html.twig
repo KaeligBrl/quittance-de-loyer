@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block card_open %}{% endblock %}
+{% block card_close %}{% endblock %}
+{% block title %}Paiement — {{ payment.amount }} €{% endblock %}
+{% block body %}
+    {% set methods = {'virement':'Virement bancaire','cheque':'Chèque','especes':'Espèces','prelevement':'Prélèvement automatique','autre':'Autre'} %}
+    <div class="dashboard-header">
+        <div>
+            <h1>{{ payment.amount }} €</h1>
+            <p class="dashboard-sub">{{ payment.paidAt|date('d/m/Y') }} · {{ methods[payment.method] ?? payment.method }}</p>
+        </div>
+        <div class="page-actions">
+            <a href="{{ path('app_payment_index') }}" class="btn-sm">← Retour</a>
+            <a href="{{ path('app_payment_edit', {'id': payment.id}) }}" class="btn">Modifier</a>
+            {{ include('payment/_delete_form.html.twig') }}
+        </div>
+    </div>
+    <div class="card">
+    <dl class="detail-grid">
+        <div class="detail-row"><dt>Montant</dt><dd><strong>{{ payment.amount }} €</strong></dd></div>
+        <div class="detail-row"><dt>Date</dt><dd>{{ payment.paidAt|date('d/m/Y') }}</dd></div>
+        <div class="detail-row"><dt>Mode de paiement</dt><dd>{{ methods[payment.method] ?? payment.method ?? '—' }}</dd></div>
+        <div class="detail-row"><dt>Quittance</dt><dd>{{ payment.rentReceipt ? payment.rentReceipt.number : '—' }}</dd></div>
+        <div class="detail-row"><dt>Note</dt><dd>{{ payment.note ?: '—' }}</dd></div>
+    </dl>
+    </div>
+{% endblock %}

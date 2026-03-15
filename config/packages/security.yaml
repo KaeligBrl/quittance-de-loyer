@@ -1,0 +1,51 @@
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    providers:
+        app_tenant_provider:
+            entity:
+                class: App\Entity\Tenant
+                property: email
+        app_team_provider:
+            entity:
+                class: App\Entity\Team
+                property: email
+        chain_provider:
+            chain:
+                providers: [app_team_provider, app_tenant_provider]
+
+    firewalls:
+        dev:
+            pattern: ^/(_profiler|_wdt|assets|build)/
+            security: false
+        main:
+            lazy: true
+            provider: chain_provider
+            form_login:
+                login_path: homepage
+                check_path: homepage
+                enable_csrf: true
+                csrf_token_id: authenticate
+                success_handler: App\Security\LoginSuccessHandler
+            logout:
+                path: security_logout
+                target: /
+
+    access_control:
+        - { path: ^/espace-bailleur, roles: ROLE_TEAM }
+        - { path: ^/biens, roles: ROLE_TEAM }
+        - { path: ^/baux, roles: ROLE_TEAM }
+        - { path: ^/quittances, roles: ROLE_TEAM }
+        - { path: ^/paiements, roles: ROLE_TEAM }
+        - { path: ^/locataires, roles: ROLE_TEAM }
+        - { path: ^/espace-locataire, roles: ROLE_USER }
+
+when@test:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4
+                time_cost: 3
+                memory_cost: 10

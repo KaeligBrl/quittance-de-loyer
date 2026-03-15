@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block card_open %}{% endblock %}
+{% block card_close %}{% endblock %}
+{% block title %}Tableau de bord{% endblock %}
+
+{% block body %}
+    <div class="dashboard-header">
+        <div>
+            <h1>Tableau de bord</h1>
+            <p class="dashboard-sub">Bonjour ! Voici un résumé de votre activité.</p>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.properties }}</div>
+            <div class="stat-label">Biens immobiliers</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.tenants }}</div>
+            <div class="stat-label">Locataires</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.receipts }}</div>
+            <div class="stat-label">Quittances émises</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">&mdash;</div>
+            <div class="stat-label">Paiements reçus</div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <h3 class="section-title">🏠 Accès rapide</h3>
+            <ul class="quick-links">
+                <li><a href="{{ path('app_property_index') }}">Gérer les biens</a></li>
+                <li><a href="{{ path('app_tenant_index') }}">Gérer les locataires</a></li>
+                <li><a href="{{ path('app_rent_receipt_index') }}">Voir les quittances</a></li>
+                <li><a href="{{ path('app_payment_index') }}">Voir les paiements</a></li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3 class="section-title">➕ Créer</h3>
+            <ul class="quick-links">
+                <li><a href="{{ path('app_property_new') }}">+ Nouveau bien</a></li>
+                <li><a href="{{ path('app_tenant_new') }}">+ Nouveau locataire</a></li>
+                <li><a href="{{ path('app_rent_receipt_new') }}">+ Nouvelle quittance</a></li>
+                <li><a href="{{ path('app_payment_new') }}">+ Saisir un paiement</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

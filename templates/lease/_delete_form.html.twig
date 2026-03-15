@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('app_lease_delete', {'id': lease.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce bail ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ lease.id) }}">
+    <button class="btn-danger">🗑 Supprimer</button>
+</form>

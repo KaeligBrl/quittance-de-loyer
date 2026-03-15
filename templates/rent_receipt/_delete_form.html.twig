@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('app_rent_receipt_delete', {'id': rent_receipt.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette quittance ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ rent_receipt.id) }}">
+    <button class="btn-danger">🗑 Supprimer</button>
+</form>

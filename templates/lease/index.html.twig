@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block card_open %}{% endblock %}
+{% block card_close %}{% endblock %}
+{% block title %}Liste des baux{% endblock %}
+{% block body %}
+    <div class="dashboard-header">
+        <div>
+            <h1>Baux</h1>
+            <p class="dashboard-sub">Gestion des contrats de bail</p>
+        </div>
+        <a href="{{ path('app_lease_new') }}" class="btn">+ Nouveau bail</a>
+    </div>
+    <div class="card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Loyer mensuel</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for lease in leases %}
+            <tr>
+                <td>{{ lease.startDate ? lease.startDate|date('d/m/Y') : '—' }}</td>
+                <td>{{ lease.endDate ? lease.endDate|date('d/m/Y') : '—' }}</td>
+                <td>{{ lease.rentAmount }} €</td>
+                <td>
+                    <a href="{{ path('app_lease_show', {'id': lease.id}) }}">Voir</a>
+                    <a href="{{ path('app_lease_edit', {'id': lease.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="5">Aucun bail trouvé.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock %}

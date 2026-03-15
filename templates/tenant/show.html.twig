@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block card_open %}{% endblock %}
+{% block card_close %}{% endblock %}
+{% block title %}{{ tenant.name }}{% endblock %}
+{% block body %}
+    <div class="dashboard-header">
+        <div>
+            <h1>{{ tenant.name }}</h1>
+            <p class="dashboard-sub">Locataire</p>
+        </div>
+        <div class="page-actions">
+            <a href="{{ path('app_tenant_index') }}" class="btn-sm">← Retour</a>
+            <a href="{{ path('app_tenant_file_index', {'id': tenant.id}) }}" class="btn-sm" style="background:var(--primary);color:#fff;border-color:var(--primary)">📁 Documents ({{ tenant.files|length }})</a>
+            <a href="{{ path('app_tenant_edit', {'id': tenant.id}) }}" class="btn">Modifier</a>
+            {{ include('tenant/_delete_form.html.twig') }}
+        </div>
+    </div>
+    <div class="card">
+    <dl class="detail-grid">
+        <div class="detail-row"><dt>E-mail</dt><dd>{{ tenant.email ?: '—' }}</dd></div>
+        <div class="detail-row"><dt>Téléphone</dt><dd>{{ tenant.phone ?: '—' }}</dd></div>
+        <div class="detail-row"><dt>Bien associé</dt><dd>{{ tenant.property ? tenant.property.title : '—' }}</dd></div>
+    </dl>
+    </div>
+{% endblock %}

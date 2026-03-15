@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+{% block card_open %}{% endblock %}
+{% block card_close %}{% endblock %}
+{% block title %}Liste des biens{% endblock %}
+{% block body %}
+    <div class="dashboard-header">
+        <div>
+            <h1>Biens immobiliers</h1>
+            <p class="dashboard-sub">Gestion de vos biens immobiliers</p>
+        </div>
+        <a href="{{ path('app_property_new') }}" class="btn">+ Nouveau bien</a>
+    </div>
+    <div class="card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Bien</th>
+                <th>Type</th>
+                <th>Ville</th>
+                <th>Surface</th>
+                <th>Loyer HC</th>
+                <th>Charges</th>
+                <th>Total CC</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for property in properties %}
+            <tr>
+                <td><strong>{{ property.title }}</strong><br><small style="color:var(--text-muted)">{{ property.address }}</small></td>
+                <td>{{ property.typeLabel }}</td>
+                <td>{{ property.city ?: '—' }}</td>
+                <td>{% if property.surface %}{{ property.surface }} m²{% else %}—{% endif %}</td>
+                <td>{% if property.rentAmount %}<strong>{{ property.rentAmount }} €</strong>{% else %}—{% endif %}</td>
+                <td>{{ property.chargesAmount ? property.chargesAmount ~ ' €' : '—' }}</td>
+                <td>{% if property.totalRent %}<strong style="color:var(--primary)">{{ property.totalRent }} €</strong>{% else %}—{% endif %}</td>
+                <td>
+                    <a href="{{ path('app_property_show', {'id': property.id}) }}" class="btn-sm">Voir</a>
+                    <a href="{{ path('app_property_edit', {'id': property.id}) }}" class="btn-sm">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="8">Aucun bien trouvé.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock %}

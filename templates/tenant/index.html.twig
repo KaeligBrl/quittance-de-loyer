@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block card_open %}{% endblock %}
+{% block card_close %}{% endblock %}
+{% block title %}Liste des locataires{% endblock %}
+{% block body %}
+    <div class="dashboard-header">
+        <div>
+            <h1>Locataires</h1>
+            <p class="dashboard-sub">Gestion de vos locataires</p>
+        </div>
+        <a href="{{ path('app_tenant_new') }}" class="btn">+ Nouveau locataire</a>
+    </div>
+    <div class="card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Bien</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tenant in tenants %}
+            <tr>
+                <td>{{ tenant.name }}</td>
+                <td>{{ tenant.email }}</td>
+                <td>{{ tenant.phone }}</td>
+                <td>{{ tenant.property ? tenant.property.title : '—' }}</td>
+                <td>
+                    <a href="{{ path('app_tenant_show', {'id': tenant.id}) }}">Voir</a>
+                    <a href="{{ path('app_tenant_file_index', {'id': tenant.id}) }}" style="color:var(--primary)">📁 Documents</a>
+                    <a href="{{ path('app_tenant_edit', {'id': tenant.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="6">Aucun locataire trouvé.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock %}

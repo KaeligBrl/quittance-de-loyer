@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+  {% if app.user %}
+    <h1>Bienvenue, {{ app.user.userIdentifier }}</h1>
+    <p>Accédez aux entités :</p>
+    <ul>
+      <li><a href="{{ path('app_tenant_index') }}">Locataires</a></li>
+      <li><a href="{{ path('app_property_index') }}">Biens</a></li>
+      <li><a href="{{ path('app_lease_index') }}">Baux</a></li>
+      <li><a href="{{ path('app_rent_receipt_index') }}">Quittances</a></li>
+      <li><a href="{{ path('app_payment_index') }}">Paiements</a></li>
+    </ul>
+    <a href="{{ path('security_logout') }}">Se déconnecter</a>
+  {% else %}
+    <h1>Connexion</h1>
+
+    {% if error %}
+      <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form action="{{ path('homepage') }}" method="post">
+      <div>
+        <label for="username">Email</label>
+        <input type="text" id="username" name="_username" value="{{ last_username }}" required autofocus>
+      </div>
+      <div>
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="_password" required>
+      </div>
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+      <button type="submit">Se connecter</button>
+    </form>
+  {% endif %}
+{% endblock %}

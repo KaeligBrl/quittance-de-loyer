@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+{% block card_open %}{% endblock %}
+{% block card_close %}{% endblock %}
+{% block title %}Documents - {{ tenant.name }}{% endblock %}
+
+{% block body %}
+<div class="dashboard-header">
+    <div>
+        <h1>Documents de {{ tenant.name }}</h1>
+        <p class="dashboard-sub">Dossier locataire - {{ tenant.property ? tenant.property.title : 'Aucun bien associe' }}</p>
+    </div>
+    <a href="{{ path('app_tenant_show', {'id': tenant.id}) }}" class="btn-sm">Retour fiche</a>
+</div>
+
+<div class="stats-grid" style="margin-bottom:24px">
+    {% for key, cat in filesByCategory %}
+    <div class="stat-card" style="{% if cat.files|length > 0 %}background:linear-gradient(135deg,#10b981 0%,#0891b2 100%){% elseif cat.required %}background:linear-gradient(135deg,#ef4444 0%,#b91c1c 100%){% else %}background:linear-gradient(135deg,#94a3b8 0%,#64748b 100%){% endif %}">
+        <div class="stat-value">{{ cat.files|length }}</div>
+        <div class="stat-label">{{ cat.label }}{% if not cat.required %} (optionnel){% endif %}</div>
+    </div>
+    {% endfor %}
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start">
+
+    <div>
+        {% for key, cat in filesByCategory %}
+        <div class="card" style="margin-bottom:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <div style="display:flex;align-items:center;gap:10px">
+                    <h3 style="font-size:1rem;font-weight:700;margin:0">{{ cat.label }}</h3>
+                    {% if cat.required %}
+                        <span class="badge" style="background:#fef3c7;color:#92400e;font-size:.72rem">Obligatoire</span>
+                    {% else %}
+                        <span class="badge" style="background:#f1f5f9;color:#64748b;font-size:.72rem">Optionnel</span>
+                    {% endif %}
+                </div>
+                {% if cat.files|length > 0 %}
+                    <span style="font-size:.8rem;color:var(--accent);font-weight:600">{{ cat.files|length }} fichier{{ cat.files|length > 1 ? 's' : '' }}</span>
+                {% else %}
+                    <span style="font-size:.8rem;color:{% if cat.required %}#ef4444{% else %}var(--text-muted){% endif %}">
+                        {% if cat.required %}Manquant{% else %}Aucun fichier{% endif %}
+                    </span>
+                {% endif %}
+            </div>
+            {% if cat.files|length > 0 %}
+            <table class="table" style="margin-top:0">
+                <thead>
+                    <tr>
+                        <th>Fichier</th>
+                        <th>Ajoute le</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for f in cat.files %}
+                    <tr>
+                        <td>{{ f.originalName }}</td>
+                        <td>{{ f.uploadedAt|date('d/m/Y H:i') }}</td>
+                        <td>
+                            <div class="page-actions">
+                                <a href="{{ path('app_tenant_file_download', {'id': tenant.id, 'fileId': f.id}) }}" class="btn-sm">Telecharger</a>
+                                <form method="post" action="{{ path('app_tenant_file_delete', {'id': tenant.id, 'fileId': f.id}) }}" style="display:inline" onsubmit="return confirm('Supprimer ?')">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete_file_' ~ f.id) }}">
+                                    <button type="submit" class="btn-danger btn-sm">Supprimer</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="card" style="position:sticky;top:90px">
+        <h3 style="font-size:1rem;font-weight:700;margin-bottom:20px">Ajouter un document</h3>
+        {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+            {{ form_row(form.category) }}
+            {{ form_row(form.file) }}
+            <button type="submit" class="btn" style="width:100%;margin-top:8px">Envoyer le document</button>
+        {{ form_end(form) }}
+    </div>
+
+</div>
+{% endblock %}

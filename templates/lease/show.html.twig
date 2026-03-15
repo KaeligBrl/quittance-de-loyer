@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block card_open %}{% endblock %}
+{% block card_close %}{% endblock %}
+{% block title %}Bail — {{ lease.tenant ? lease.tenant.name : 'Sans locataire' }}{% endblock %}
+{% block body %}
+    <div class="dashboard-header">
+        <div>
+            <h1>{{ lease.tenant ? lease.tenant.name : 'Bail' }}</h1>
+            <p class="dashboard-sub">{{ lease.property ? lease.property.title : '—' }}</p>
+        </div>
+        <div class="page-actions">
+            <a href="{{ path('app_lease_index') }}" class="btn-sm">← Retour</a>
+            <a href="{{ path('app_lease_edit', {'id': lease.id}) }}" class="btn">Modifier</a>
+            {{ include('lease/_delete_form.html.twig') }}
+        </div>
+    </div>
+    <div class="card">
+    <dl class="detail-grid">
+        <div class="detail-row"><dt>Bien</dt><dd>{{ lease.property ? lease.property.title : '—' }}</dd></div>
+        <div class="detail-row"><dt>Locataire</dt><dd>{{ lease.tenant ? lease.tenant.name : '—' }}</dd></div>
+        <div class="detail-row"><dt>Début du bail</dt><dd>{{ lease.startDate ? lease.startDate|date('d/m/Y') : '—' }}</dd></div>
+        <div class="detail-row"><dt>Fin du bail</dt><dd>{{ lease.endDate ? lease.endDate|date('d/m/Y') : 'En cours' }}</dd></div>
+        <div class="detail-row"><dt>Loyer mensuel</dt><dd><strong>{{ lease.rentAmount }} €</strong></dd></div>
+    </dl>
+    </div>
+{% endblock %}

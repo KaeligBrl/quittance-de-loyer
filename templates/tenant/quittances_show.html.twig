@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block card_open %}{% endblock %}
+{% block card_close %}{% endblock %}
+{% block title %}Quittance {{ receipt.number }}{% endblock %}
+{% block body %}
+<div class="dashboard-header">
+    <div>
+        <h1>Quittance {{ receipt.number }}</h1>
+        <p class="dashboard-sub">{{ tenant.name }}</p>
+    </div>
+    <div class="page-actions">
+        <a href="{{ path('tenant_quittance_index') }}" class="btn-sm">← Mes quittances</a>
+    </div>
+</div>
+
+<div class="card">
+    <dl class="detail-grid">
+        <div class="detail-row">
+            <dt>Numéro</dt>
+            <dd><span class="badge">{{ receipt.number }}</span></dd>
+        </div>
+        <div class="detail-row">
+            <dt>Période</dt>
+            <dd>{{ receipt.periodStart|date('d/m/Y') }} → {{ receipt.periodEnd|date('d/m/Y') }}</dd>
+        </div>
+        <div class="detail-row">
+            <dt>Montant</dt>
+            <dd><strong>{{ receipt.amount }} €</strong></dd>
+        </div>
+        <div class="detail-row">
+            <dt>Émise le</dt>
+            <dd>{{ receipt.issuedAt|date('d/m/Y') }}</dd>
+        </div>
+    </dl>
+</div>
+{% endblock %}

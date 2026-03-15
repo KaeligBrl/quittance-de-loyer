@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}QuittanceDeLoyer{% endblock %} — QuittanceDeLoyer</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2228%22>🏠</text></svg>">
+        {% block stylesheets %}
+            <link rel="stylesheet" href="/css/app.css">
+        {% endblock %}
+        {% block javascripts %}{% endblock %}
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container header-inner">
+                <a class="logo" href="{{ path('homepage') }}">🏠 QuittanceDeLoyer</a>
+                <nav class="main-nav">
+                    {% if app.user %}
+                        {% if is_granted('ROLE_TEAM') %}
+                            <a href="{{ path('owner_dashboard') }}" class="nav-link">Tableau de bord</a>
+                            <a href="{{ path('app_property_index') }}" class="nav-link">Biens</a>
+                            <a href="{{ path('app_tenant_index') }}" class="nav-link">Locataires</a>
+                            <a href="{{ path('app_rent_receipt_index') }}" class="nav-link">Quittances</a>
+                            <a href="{{ path('app_payment_index') }}" class="nav-link">Paiements</a>
+                        {% elseif is_granted('ROLE_USER') %}
+                            <a href="{{ path('tenant_dashboard') }}" class="nav-link">Mon espace</a>
+                            <a href="{{ path('tenant_quittance_index') }}" class="nav-link">Mes quittances</a>
+                        {% endif %}
+                        <div class="nav-user">
+                            <span class="user-badge">{{ app.user.firstName|slice(0,1)|upper }}</span>
+                            <span class="user-id">{{ app.user.firstName }}</span>
+                        </div>
+                        <a class="btn-logout" href="{{ path('security_logout') }}">Déconnexion</a>
+                    {% else %}
+                        <a class="btn-nav" href="{{ path('homepage') }}">Se connecter</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </header>
+
+        <main class="container">
+            {% for type, messages in app.flashes(['success', 'error', 'warning']) %}
+                {% for message in messages %}
+                    <div class="flash flash-{{ type }}">
+                        {% if type == 'success' %}✓{% elseif type == 'error' %}✕{% else %}⚠{% endif %}
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% block card_open %}<div class="card">{% endblock %}
+                {% block body %}{% endblock %}
+            {% block card_close %}</div>{% endblock %}
+        </main>
+        <footer class="site-footer">
+            <div class="container">© {{ "now"|date("Y") }} QuittanceDeLoyer — Gestion locative simplifiée</div>
+        </footer>
+    </body>
+</html>

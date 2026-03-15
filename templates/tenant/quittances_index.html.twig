@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% block card_open %}{% endblock %}
+{% block card_close %}{% endblock %}
+{% block title %}Mes quittances{% endblock %}
+{% block body %}
+<div class="dashboard-header">
+    <div>
+        <h1>Mes quittances</h1>
+        <p class="dashboard-sub">{{ tenant.name }}</p>
+    </div>
+    <div class="page-actions">
+        <a href="{{ path('tenant_dashboard') }}" class="btn-sm">← Tableau de bord</a>
+    </div>
+</div>
+
+<div class="card">
+    {% if receipts is empty %}
+        <p style="color:var(--text-muted);text-align:center;padding:2rem">Aucune quittance disponible pour le moment.</p>
+    {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Numéro</th>
+                    <th>Période</th>
+                    <th>Montant</th>
+                    <th>Émise le</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for receipt in receipts %}
+                <tr>
+                    <td><span class="badge">{{ receipt.number }}</span></td>
+                    <td>{{ receipt.periodStart|date('d/m/Y') }} → {{ receipt.periodEnd|date('d/m/Y') }}</td>
+                    <td><strong>{{ receipt.amount }} €</strong></td>
+                    <td>{{ receipt.issuedAt|date('d/m/Y') }}</td>
+                    <td>
+                        <a href="{{ path('tenant_quittance_show', {id: receipt.id}) }}" class="btn-sm">Voir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}

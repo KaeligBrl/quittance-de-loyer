@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block card_open %}{% endblock %}
+{% block card_close %}{% endblock %}
+{% block title %}Mon espace{% endblock %}
+
+{% block body %}
+    <div class="dashboard-header">
+        <div>
+            <h1>Mon espace</h1>
+            <p class="dashboard-sub">Espace locataire</p>
+        </div>
+    </div>
+    <div class="card">
+        <p style="color:var(--text-muted)">Aucun profil de locataire trouvé pour <strong>{{ email }}</strong>.</p>
+        <p style="color:var(--text-muted)">Si vous êtes locataire, merci de contacter votre bailleur pour lier votre compte.</p>
+    </div>
+{% endblock %}

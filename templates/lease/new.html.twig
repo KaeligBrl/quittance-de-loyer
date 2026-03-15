@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block card_open %}{% endblock %}
+{% block card_close %}{% endblock %}
+{% block title %}Nouveau bail{% endblock %}
+{% block body %}
+    <div class="dashboard-header">
+        <div><h1>Nouveau bail</h1></div>
+        <a href="{{ path('app_lease_index') }}" class="btn-sm">← Retour</a>
+    </div>
+    <div class="card">
+    {{ include('lease/_form.html.twig', {'button_label': 'Créer'}) }}
+    </div>
+{% endblock %}
