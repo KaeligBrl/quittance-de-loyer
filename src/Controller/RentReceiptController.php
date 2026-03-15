@@ -6,6 +6,7 @@ use App\Entity\RentReceipt;
 use App\Entity\Tenant;
 use App\Form\RentReceiptType;
 use App\Repository\RentReceiptRepository;
+use App\Service\RentReceiptPdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,10 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/quittances')]
 final class RentReceiptController extends AbstractController
 {
+    public function __construct(
+        private RentReceiptPdfService $pdfService,
+    ) {}
+
     #[Route(name: 'app_rent_receipt_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -84,6 +89,18 @@ final class RentReceiptController extends AbstractController
             'rent_receipt'   => $rentReceipt,
             'form'           => $form,
             'tenant_amounts' => $tenantAmounts,
+        ]);
+    }
+
+    #[Route('/{id}/pdf', name: 'app_rent_receipt_pdf', methods: ['GET'])]
+    public function pdf(RentReceipt $rentReceipt): Response
+    {
+        $owner = $this->getUser();
+        $content = $this->pdfService->generate($rentReceipt, $owner);
+
+        return new Response($content, 200, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="quittance-'.$rentReceipt->getNumber().'.pdf"',
         ]);
     }
 

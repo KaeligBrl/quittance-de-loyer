@@ -10,6 +10,7 @@
         </div>
         <div class="page-actions">
             <a href="{{ path('app_rent_receipt_index') }}" class="btn-sm">← Retour</a>
+            <a href="{{ path('app_rent_receipt_pdf', {'id': rent_receipt.id}) }}" class="btn-sm" target="_blank">⬇ Télécharger PDF</a>
             {% if not rent_receipt.isPaid %}
                 <a href="{{ path('app_payment_new', {'quittance': rent_receipt.id}) }}" class="btn-sm btn-success">+ Saisir paiement</a>
             {% endif %}
