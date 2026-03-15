@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Payment;
 use App\Entity\RentReceipt;
 use App\Form\PaymentType;
+use App\Service\RentReceiptMailerService;
+use App\Service\RentReceiptPdfService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +16,11 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/paiements')]
 final class PaymentController extends AbstractController
 {
+    public function __construct(
+        private RentReceiptPdfService $pdfService,
+        private RentReceiptMailerService $mailerService,
+    ) {}
+
     #[Route(name: 'app_payment_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -42,7 +49,9 @@ final class PaymentController extends AbstractController
         $em->persist($payment);
         $em->flush();
 
-        $this->addFlash('success', 'Paiement de '.$rentReceipt->getAmount().' € enregistré (virement) pour la quittance '.$rentReceipt->getNumber().'.');
+        $this->sendReceiptPdfByEmail($rentReceipt);
+
+        $this->addFlash('success', 'Paiement de '.$rentReceipt->getAmount().' € enregistré (virement) pour la quittance '.$rentReceipt->getNumber().'. La quittance PDF a été envoyée par e-mail au locataire.');
 
         return $this->redirectToRoute('app_rent_receipt_index');
     }
@@ -67,6 +76,12 @@ final class PaymentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($payment);
             $entityManager->flush();
+
+            $rentReceipt = $payment->getRentReceipt();
+            if ($rentReceipt) {
+                $this->sendReceiptPdfByEmail($rentReceipt);
+                $this->addFlash('success', 'Paiement enregistré. La quittance PDF a été envoyée par e-mail au locataire.');
+            }
 
             return $this->redirectToRoute('app_payment_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -112,5 +127,17 @@ final class PaymentController extends AbstractController
         }
 
         return $this->redirectToRoute('app_payment_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    private function sendReceiptPdfByEmail(RentReceipt $rentReceipt): void
+    {
+        try {
+            $owner = $this->getUser();
+            $pdf = $this->pdfService->generate($rentReceipt, $owner);
+            $this->mailerService->sendToTenant($rentReceipt, $pdf);
+        } catch (\Throwable $e) {
+            // Ne pas bloquer le flux si l'envoi échoue
+            $this->addFlash('warning', 'Paiement enregistré, mais l\'envoi de l\'e-mail a échoué : '.$e->getMessage());
+        }
     }
 }
