@@ -19,6 +19,9 @@ class RentReceipt
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?Tenant $tenant = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $tenantName = null;
+
     #[ORM\Column(length: 100)]
     private string $number;
 
@@ -46,6 +49,17 @@ class RentReceipt
 
     public function getTenant(): ?Tenant { return $this->tenant; }
     public function setTenant(?Tenant $tenant): self { $this->tenant = $tenant; return $this; }
+
+    public function getTenantName(): ?string { return $this->tenantName; }
+    public function setTenantName(?string $tenantName): self { $this->tenantName = $tenantName; return $this; }
+
+    public function getTenantDisplayName(): string
+    {
+        if ($this->tenant !== null) {
+            return $this->tenant->getName();
+        }
+        return $this->tenantName ?? '—';
+    }
 
     public function getNumber(): string { return $this->number; }
     public function setNumber(string $number): self { $this->number = $number; return $this; }

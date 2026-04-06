@@ -76,6 +76,7 @@ final class RentReceiptController extends AbstractController
             // Auto-génération du numéro
             $number = $repo->generateNumber($tenant->getId(), $rentReceipt->getPeriodStart());
             $rentReceipt->setNumber($number);
+            $rentReceipt->setTenantName($tenant->getName());
 
             $entityManager->persist($rentReceipt);
             $entityManager->flush();

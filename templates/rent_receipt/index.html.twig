@@ -26,7 +26,7 @@
     {% for r in rent_receipts %}
         <tr>
             <td><span class="badge">{{ r.number }}</span></td>
-            <td>{{ r.tenant ? r.tenant.name : '—' }}</td>
+            <td>{{ r.tenantDisplayName }}</td>
             <td style="white-space:nowrap">{{ r.periodStart|date('d/m/Y') }} → {{ r.periodEnd|date('d/m/Y') }}</td>
             <td><strong>{{ r.amount }} €</strong></td>
             <td>

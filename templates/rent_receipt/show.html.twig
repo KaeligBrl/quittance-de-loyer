@@ -6,7 +6,7 @@
     <div class="dashboard-header">
         <div>
             <h1>Quittance {{ rent_receipt.number }}</h1>
-            <p class="dashboard-sub">{{ rent_receipt.tenant ? rent_receipt.tenant.name : '—' }}</p>
+            <p class="dashboard-sub">{{ rent_receipt.tenantDisplayName }}</p>
         </div>
         <div class="page-actions">
             <a href="{{ path('app_rent_receipt_index') }}" class="btn-sm">← Retour</a>
@@ -21,7 +21,7 @@
     <div class="card">
     <dl class="detail-grid">
         <div class="detail-row"><dt>Numéro</dt><dd><span class="badge">{{ rent_receipt.number }}</span></dd></div>
-        <div class="detail-row"><dt>Locataire</dt><dd>{{ rent_receipt.tenant ? rent_receipt.tenant.name : '—' }}</dd></div>
+        <div class="detail-row"><dt>Locataire</dt><dd>{{ rent_receipt.tenantDisplayName }}</dd></div>
         <div class="detail-row"><dt>Période</dt><dd>{{ rent_receipt.periodStart|date('d/m/Y') }} → {{ rent_receipt.periodEnd|date('d/m/Y') }}</dd></div>
         <div class="detail-row"><dt>Montant</dt><dd><strong>{{ rent_receipt.amount }} €</strong></dd></div>
         <div class="detail-row"><dt>Émis le</dt><dd>{{ rent_receipt.issuedAt|date('d/m/Y') }}</dd></div>

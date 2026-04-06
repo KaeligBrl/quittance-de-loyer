@@ -45,9 +45,9 @@
             <td style="width:48%; vertical-align:top;">
                 <div class="section">
                     <div class="section-title">Locataire</div>
-                    <strong>{{ receipt.tenant.name }}</strong><br>
-                    {{ receipt.tenant.email }}<br>
-                    {% if receipt.tenant.phone %}{{ receipt.tenant.phone }}{% endif %}
+                    <strong>{{ receipt.tenantDisplayName }}</strong><br>
+                    {% if receipt.tenant %}{{ receipt.tenant.email }}<br>{% endif %}
+                    {% if receipt.tenant and receipt.tenant.phone %}{{ receipt.tenant.phone }}{% endif %}
                 </div>
             </td>
         </tr>

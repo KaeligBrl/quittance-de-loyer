@@ -34,7 +34,7 @@
                         </a>
                     {% else %}—{% endif %}
                 </td>
-                <td>{{ payment.rentReceipt ? payment.rentReceipt.tenant.name : '—' }}</td>
+                <td>{{ payment.rentReceipt ? payment.rentReceipt.tenantDisplayName : '—' }}</td>
                 <td><strong>{{ payment.amount }} €</strong></td>
                 <td>{{ payment.paidAt ? payment.paidAt|date('d/m/Y') : '—' }}</td>
                 <td>{{ methods[payment.method] ?? payment.method ?? '—' }}</td>
