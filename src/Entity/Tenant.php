@@ -36,6 +36,12 @@ class Tenant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $password = null;
 
+    #[ORM\Column(length: 100, nullable: true, unique: true)]
+    private ?string $invitationToken = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $invitationTokenExpiresAt = null;
+
     public function __construct()
     {
         $this->files = new ArrayCollection();
@@ -62,4 +68,23 @@ class Tenant implements UserInterface, PasswordAuthenticatedUserInterface
     public function getPassword(): ?string { return $this->password; }
     public function setPassword(?string $password): self { $this->password = $password; return $this; }
     public function eraseCredentials(): void {}
+
+    public function getInvitationToken(): ?string { return $this->invitationToken; }
+    public function setInvitationToken(?string $invitationToken): self { $this->invitationToken = $invitationToken; return $this; }
+
+    public function getInvitationTokenExpiresAt(): ?\DateTimeImmutable { return $this->invitationTokenExpiresAt; }
+    public function setInvitationTokenExpiresAt(?\DateTimeImmutable $invitationTokenExpiresAt): self { $this->invitationTokenExpiresAt = $invitationTokenExpiresAt; return $this; }
+
+    public function isInvitationTokenValid(): bool
+    {
+        return $this->invitationToken !== null
+            && $this->invitationTokenExpiresAt !== null
+            && $this->invitationTokenExpiresAt > new \DateTimeImmutable();
+    }
+
+    public function generateInvitationToken(): void
+    {
+        $this->invitationToken = bin2hex(random_bytes(32));
+        $this->invitationTokenExpiresAt = new \DateTimeImmutable('+72 hours');
+    }
 }

@@ -16,6 +16,7 @@ class Lease
     private ?Property $property = null;
 
     #[ORM\ManyToOne(targetEntity: Tenant::class)]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?Tenant $tenant = null;
 
     #[ORM\Column(type: 'date')]

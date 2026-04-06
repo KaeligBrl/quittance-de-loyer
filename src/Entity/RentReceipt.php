@@ -16,6 +16,7 @@ class RentReceipt
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Tenant::class)]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?Tenant $tenant = null;
 
     #[ORM\Column(length: 100)]

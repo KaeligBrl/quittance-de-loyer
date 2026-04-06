@@ -12,6 +12,9 @@
             <a href="{{ path('app_tenant_index') }}" class="btn-sm">← Retour</a>
             <a href="{{ path('app_tenant_file_index', {'id': tenant.id}) }}" class="btn-sm" style="background:var(--primary);color:#fff;border-color:var(--primary)">📁 Documents ({{ tenant.files|length }})</a>
             <a href="{{ path('app_tenant_edit', {'id': tenant.id}) }}" class="btn">Modifier</a>
+            {% if not tenant.password or tenant.invitationToken %}
+                <a href="{{ path('app_tenant_resend_invitation', {'id': tenant.id}) }}" class="btn-sm" style="border-color:var(--primary);color:var(--primary);">📧 Renvoyer l'invitation</a>
+            {% endif %}
             {{ include('tenant/_delete_form.html.twig') }}
         </div>
     </div>
@@ -20,6 +23,18 @@
         <div class="detail-row"><dt>E-mail</dt><dd>{{ tenant.email ?: '—' }}</dd></div>
         <div class="detail-row"><dt>Téléphone</dt><dd>{{ tenant.phone ?: '—' }}</dd></div>
         <div class="detail-row"><dt>Bien associé</dt><dd>{{ tenant.property ? tenant.property.title : '—' }}</dd></div>
+        <div class="detail-row">
+            <dt>Compte</dt>
+            <dd>
+                {% if tenant.password and not tenant.invitationToken %}
+                    <span style="color:#2e7d32;font-weight:600;">✔ Actif — le locataire a défini son mot de passe</span>
+                {% elseif tenant.invitationToken %}
+                    <span style="color:#e65100;font-weight:600;">⏳ Invitation envoyée — en attente de création du mot de passe</span>
+                {% else %}
+                    <span style="color:#999;">— Pas d'accès configuré</span>
+                {% endif %}
+            </dd>
+        </div>
     </dl>
     </div>
 {% endblock %}

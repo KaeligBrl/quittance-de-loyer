@@ -18,6 +18,7 @@
                 <th>Email</th>
                 <th>Téléphone</th>
                 <th>Bien</th>
+                <th>Compte</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -28,6 +29,15 @@
                 <td>{{ tenant.email }}</td>
                 <td>{{ tenant.phone }}</td>
                 <td>{{ tenant.property ? tenant.property.title : '—' }}</td>
+                <td>
+                    {% if tenant.password and not tenant.invitationToken %}
+                        <span style="color:#2e7d32;font-weight:600;">✔ Actif</span>
+                    {% elseif tenant.invitationToken %}
+                        <span style="color:#e65100;font-weight:600;">⏳ En attente</span>
+                    {% else %}
+                        <span style="color:#999;">— Sans accès</span>
+                    {% endif %}
+                </td>
                 <td>
                     <a href="{{ path('app_tenant_show', {'id': tenant.id}) }}">Voir</a>
                     <a href="{{ path('app_tenant_file_index', {'id': tenant.id}) }}" style="color:var(--primary)">📁 Documents</a>
