@@ -15,7 +15,7 @@ class TenantInvitationMailerService
         private MailerInterface $mailer,
         private UrlGeneratorInterface $urlGenerator,
         private Environment $twig,
-        private string $senderEmail = 'noreply@quittancedeloyer.local',
+        private string $senderEmail = 'contact@kaeligberel.fr',
         private string $senderName = 'Quittance de Loyer',
     ) {}
 
