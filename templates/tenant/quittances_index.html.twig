@@ -35,7 +35,7 @@
                     <td><strong>{{ receipt.amount }} €</strong></td>
                     <td>{{ receipt.issuedAt|date('d/m/Y') }}</td>
                     <td>
-                        <a href="{{ path('tenant_quittance_show', {id: receipt.id}) }}" class="btn-sm">Voir</a>
+                        <a href="{{ path('tenant_quittance_pdf', {id: receipt.id}) }}" class="btn-sm" target="_blank">📄 Voir PDF</a>
                     </td>
                 </tr>
                 {% endfor %}
