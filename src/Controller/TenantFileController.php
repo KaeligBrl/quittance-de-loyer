@@ -48,7 +48,7 @@ class TenantFileController extends AbstractController
             $em->persist($file);
             $em->flush();
 
-            $this->addFlash('success', 'Document ajoute.');
+            $this->addFlash('success', 'Document ajouté avec succès.');
             return $this->redirectToRoute('app_tenant_file_index', ['id' => $tenant->getId()]);
         }
 
