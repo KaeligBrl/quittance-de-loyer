@@ -14,13 +14,25 @@ class TenantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('email')
-            ->add('phone')
-            ->add('property', EntityType::class, [
-                'class' => Property::class,
-                'choice_label' => 'title',
+            ->add('name', null, [
+                'label' => 'Nom complet',
+                'attr'  => ['placeholder' => 'Prénom Nom'],
+            ])
+            ->add('email', null, [
+                'label' => 'Adresse email',
+                'attr'  => ['placeholder' => 'locataire@email.fr'],
+            ])
+            ->add('phone', null, [
+                'label'    => 'Téléphone',
                 'required' => false,
+                'attr'     => ['placeholder' => '06 00 00 00 00'],
+            ])
+            ->add('property', EntityType::class, [
+                'class'        => Property::class,
+                'choice_label' => 'title',
+                'label'        => 'Bien associé',
+                'required'     => false,
+                'placeholder'  => '— Aucun bien —',
             ])
         ;
     }
