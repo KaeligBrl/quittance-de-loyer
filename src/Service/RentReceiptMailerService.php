@@ -12,8 +12,8 @@ class RentReceiptMailerService
 {
     public function __construct(
         private MailerInterface $mailer,
-        private string $senderEmail = 'noreply@quittancedeloyer.local',
-        private string $senderName = 'Quittance de Loyer',
+        private string $senderEmail = 'contact@kaeligberel.fr',
+        private string $senderName = 'Quittance de loyer',
     ) {}
 
     public function sendToTenant(RentReceipt $receipt, string $pdfContent): void

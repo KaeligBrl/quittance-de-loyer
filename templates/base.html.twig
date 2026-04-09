@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}QuittanceDeLoyer{% endblock %} — QuittanceDeLoyer</title>
+        <title>{% block title %}Quittance de loyer{% endblock %} — Quittance de loyer</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
     <body>
         <header class="site-header">
             <div class="container header-inner">
-                <a class="logo" href="{{ path('homepage') }}">🏠 QuittanceDeLoyer</a>
+                <a class="logo" href="{{ path('homepage') }}">🏠 Quittance de loyer</a>
                 <nav class="main-nav">
                     {% if app.user %}
                         {% if is_granted('ROLE_TEAM') %}
@@ -55,7 +55,7 @@
             {% block card_close %}</div>{% endblock %}
         </main>
         <footer class="site-footer">
-            <div class="container">© {{ "now"|date("Y") }} QuittanceDeLoyer — Gestion locative simplifiée</div>
+            <div class="container">© {{ "now"|date("Y") }} Quittance de loyer — Gestion locative simplifiée</div>
         </footer>
     </body>
 </html>
