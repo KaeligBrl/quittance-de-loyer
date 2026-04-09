@@ -36,6 +36,7 @@
                     <td>{{ receipt.issuedAt|date('d/m/Y') }}</td>
                     <td>
                         <a href="{{ path('tenant_quittance_pdf', {id: receipt.id}) }}" class="btn-sm" target="_blank">📄 Voir PDF</a>
+                        <a href="{{ path('tenant_quittance_pdf_download', {id: receipt.id}) }}" class="btn-sm">⬇ Télécharger</a>
                     </td>
                 </tr>
                 {% endfor %}

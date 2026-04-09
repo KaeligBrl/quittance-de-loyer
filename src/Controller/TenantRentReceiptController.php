@@ -77,4 +77,25 @@ class TenantRentReceiptController extends AbstractController
             'Content-Disposition' => 'inline; filename="quittance-'.$receipt->getNumber().'.pdf"',
         ]);
     }
+
+    #[Route('/{id}/pdf/download', name: 'pdf_download', methods: ['GET'])]
+    public function pdfDownload(RentReceipt $receipt, EntityManagerInterface $em): Response
+    {
+        $tenant = $this->getUser();
+        if (!$tenant instanceof Tenant) {
+            return $this->redirectToRoute('homepage');
+        }
+
+        if ($receipt->getTenant()?->getId() !== $tenant->getId()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $owner = $em->getRepository(Team::class)->findOneBy([]);
+        $content = $this->pdfService->generate($receipt, $owner);
+
+        return new Response($content, 200, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="quittance-'.$receipt->getNumber().'.pdf"',
+        ]);
+    }
 }
