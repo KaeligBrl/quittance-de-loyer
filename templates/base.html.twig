@@ -31,7 +31,11 @@
                         {% endif %}
                         <div class="nav-user">
                             <span class="user-badge">{{ app.user.firstName|slice(0,1)|upper }}</span>
-                            <span class="user-id">{{ app.user.firstName }}</span>
+                            {% if is_granted('ROLE_TEAM') %}
+                                <a href="{{ path('owner_profile_edit') }}" class="user-id" style="text-decoration:none;color:inherit">{{ app.user.firstName }}</a>
+                            {% else %}
+                                <span class="user-id">{{ app.user.firstName }}</span>
+                            {% endif %}
                         </div>
                         <a class="btn-logout" href="{{ path('security_logout') }}">Déconnexion</a>
                     {% else %}

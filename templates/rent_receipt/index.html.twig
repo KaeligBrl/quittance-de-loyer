@@ -42,7 +42,7 @@
             </td>
             <td>
                 <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-                    <a href="{{ path('app_rent_receipt_show', {'id': r.id}) }}" class="btn-sm">Voir</a>
+                    <a href="{{ path('app_rent_receipt_pdf', {'id': r.id}) }}" class="btn-sm" target="_blank">📄 Voir PDF</a>
                     <a href="{{ path('app_rent_receipt_edit', {'id': r.id}) }}" class="btn-sm">Modifier</a>
                     {% if not r.isPaid %}
                         <a href="{{ path('app_payment_new', {'quittance': r.id}) }}" class="btn-sm btn-success">+ Saisir paiement</a>

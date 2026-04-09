@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% block card_open %}{% endblock %}
+{% block card_close %}{% endblock %}
+{% block title %}Mon profil{% endblock %}
+{% block body %}
+<div class="dashboard-header">
+    <div>
+        <h1>Mon profil</h1>
+        <p class="dashboard-sub">Modifier vos informations personnelles</p>
+    </div>
+    <a href="{{ path('owner_dashboard') }}" class="btn-sm">← Retour</a>
+</div>
+
+{% if error %}
+    <div class="flash flash-error">✕ {{ error }}</div>
+{% endif %}
+
+<div class="card" style="max-width:560px">
+    <form method="post" action="{{ path('owner_profile_edit') }}">
+        <div class="form-group">
+            <label class="form-label" for="firstName">Prénom</label>
+            <input type="text" id="firstName" name="firstName" class="form-control"
+                   value="{{ user.firstName ?? '' }}" placeholder="Votre prénom">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="lastName">Nom</label>
+            <input type="text" id="lastName" name="lastName" class="form-control"
+                   value="{{ user.lastName ?? '' }}" placeholder="Votre nom">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="email">Adresse email <span style="color:red">*</span></label>
+            <input type="email" id="email" name="email" class="form-control" required
+                   value="{{ user.email }}" placeholder="votre@email.fr">
+        </div>
+
+        <hr style="margin:1.5rem 0;border:none;border-top:1px solid var(--border)">
+        <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:1rem">
+            Laissez vide pour ne pas modifier le mot de passe.
+        </p>
+
+        <div class="form-group">
+            <label class="form-label" for="newPassword">Nouveau mot de passe</label>
+            <input type="password" id="newPassword" name="newPassword" class="form-control"
+                   placeholder="8 caractères minimum" autocomplete="new-password">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="confirmPassword">Confirmer le mot de passe</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
+                   placeholder="Répéter le mot de passe" autocomplete="new-password">
+        </div>
+
+        <div style="margin-top:1.5rem">
+            <button type="submit" class="btn">Enregistrer</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
