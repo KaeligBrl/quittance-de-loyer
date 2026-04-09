@@ -21,7 +21,7 @@
   --radius-sm:      8px;
   --shadow:         0 1px 3px rgba(0,0,0,.06), 0 4px 20px rgba(0,0,0,.06);
   --shadow-lg:      0 10px 40px rgba(0,0,0,.10);
-  --max-width:      1080px;
+  --max-width:      1200px;
   --header-h:       64px;
 }
 
@@ -555,13 +555,96 @@ button[type="submit"]:not(.btn-sm):not(.btn-success):not(.btn-logout):hover {
   margin-top: auto;
 }
 
+/* ── Burger button ───────────────────────────────── */
+.burger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  cursor: pointer;
+  padding: 8px;
+  flex-shrink: 0;
+}
+
+.burger-btn span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform .25s, opacity .25s;
+}
+
+.burger-btn.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger-btn.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.burger-btn.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
 /* ── Responsive ───────────────────────────────────── */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+  .burger-btn { display: flex; }
+
+  .main-nav {
+    display: none;
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px 20px 32px;
+    gap: 4px;
+    z-index: 150;
+    border-top: 1px solid var(--border);
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,.12);
+  }
+
+  .main-nav.open { display: flex; }
+
+  .nav-link {
+    padding: 13px 16px;
+    font-size: 1rem;
+    border-radius: var(--radius-sm);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-link:last-of-type { border-bottom: none; }
+
+  .nav-user {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+    padding-top: 16px;
+    margin-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  .user-id { display: block !important; }
+
+  .btn-logout {
+    margin-left: 0;
+    margin-top: 12px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn-nav {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    margin-top: 8px;
+  }
+
   .container { padding: 0 16px; }
   .card { padding: 20px; }
-  .main-nav { gap: 2px; }
-  .nav-link { padding: 5px 8px; font-size: 0.82rem; }
-  .user-id { display: none; }
   .table { font-size: 0.82rem; }
   .table thead th, .table tbody td { padding: 8px 10px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }

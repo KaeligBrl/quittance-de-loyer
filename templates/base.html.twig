@@ -12,12 +12,30 @@
             <link rel="stylesheet" href="/css/app.css">
         {% endblock %}
         {% block javascripts %}{% endblock %}
+        <script>
+            const burger = document.getElementById('burgerBtn');
+            const nav    = document.getElementById('mainNav');
+            burger?.addEventListener('click', () => {
+                const open = nav.classList.toggle('open');
+                burger.classList.toggle('active', open);
+                burger.setAttribute('aria-expanded', open);
+            });
+            // Fermer le menu en cliquant sur un lien
+            nav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+                nav.classList.remove('open');
+                burger.classList.remove('active');
+                burger.setAttribute('aria-expanded', false);
+            }));
+        </script>
     </head>
     <body>
         <header class="site-header">
             <div class="container header-inner">
                 <a class="logo" href="{{ path('homepage') }}">🏠 Quittance de loyer</a>
-                <nav class="main-nav">
+                <button class="burger-btn" id="burgerBtn" aria-label="Menu" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+                <nav class="main-nav" id="mainNav">
                     {% if app.user %}
                         {% if is_granted('ROLE_TEAM') %}
                             <a href="{{ path('owner_dashboard') }}" class="nav-link">Tableau de bord</a>
