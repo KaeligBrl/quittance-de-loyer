@@ -14,7 +14,10 @@ class HomeController extends AbstractController
     {
         $user = $this->getUser();
         if ($user) {
-            return $this->render('home/index.html.twig');
+            if ($this->isGranted('ROLE_TEAM')) {
+                return $this->redirectToRoute('owner_dashboard');
+            }
+            return $this->redirectToRoute('tenant_dashboard');
         }
 
         $error = $authenticationUtils->getLastAuthenticationError();
