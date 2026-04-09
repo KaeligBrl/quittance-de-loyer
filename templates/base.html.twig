@@ -33,6 +33,8 @@
                             <span class="user-badge">{{ app.user.firstName|slice(0,1)|upper }}</span>
                             {% if is_granted('ROLE_TEAM') %}
                                 <a href="{{ path('owner_profile_edit') }}" class="user-id" style="text-decoration:none;color:inherit">{{ app.user.firstName }}</a>
+                            {% elseif is_granted('ROLE_USER') %}
+                                <a href="{{ path('tenant_profile_edit') }}" class="user-id" style="text-decoration:none;color:inherit">{{ app.user.name }}</a>
                             {% else %}
                                 <span class="user-id">{{ app.user.firstName }}</span>
                             {% endif %}
