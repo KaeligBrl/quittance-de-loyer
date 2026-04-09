@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\RentReceipt;
+use App\Entity\Team;
 use App\Entity\Tenant;
 use App\Repository\RentReceiptRepository;
 use App\Service\RentReceiptPdfService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -56,7 +58,7 @@ class TenantRentReceiptController extends AbstractController
     }
 
     #[Route('/{id}/pdf', name: 'pdf', methods: ['GET'])]
-    public function pdf(RentReceipt $receipt): Response
+    public function pdf(RentReceipt $receipt, EntityManagerInterface $em): Response
     {
         $tenant = $this->getUser();
         if (!$tenant instanceof Tenant) {
@@ -67,7 +69,8 @@ class TenantRentReceiptController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $content = $this->pdfService->generate($receipt);
+        $owner = $em->getRepository(Team::class)->findOneBy([]);
+        $content = $this->pdfService->generate($receipt, $owner);
 
         return new Response($content, 200, [
             'Content-Type'        => 'application/pdf',
