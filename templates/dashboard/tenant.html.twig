@@ -49,7 +49,7 @@
     <div class="card">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
             <h3 class="section-title" style="margin:0">Mon dossier locataire</h3>
-            <a href="{{ path('app_tenant_file_index', {id: tenant.id}) }}" class="btn-sm">G&eacute;rer &rarr;</a>
+            <a href="{{ path('tenant_self_file_index') }}" class="btn-sm">G&eacute;rer &rarr;</a>
         </div>
         {% for key, cat in filesByCategory %}
         <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
