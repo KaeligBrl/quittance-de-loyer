@@ -12,21 +12,6 @@
             <link rel="stylesheet" href="/css/app.css">
         {% endblock %}
         {% block javascripts %}{% endblock %}
-        <script>
-            const burger = document.getElementById('burgerBtn');
-            const nav    = document.getElementById('mainNav');
-            burger?.addEventListener('click', () => {
-                const open = nav.classList.toggle('open');
-                burger.classList.toggle('active', open);
-                burger.setAttribute('aria-expanded', open);
-            });
-            // Fermer le menu en cliquant sur un lien
-            nav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-                nav.classList.remove('open');
-                burger.classList.remove('active');
-                burger.setAttribute('aria-expanded', false);
-            }));
-        </script>
     </head>
     <body>
         <header class="site-header">
@@ -81,5 +66,19 @@
         <footer class="site-footer">
             <div class="container">© {{ "now"|date("Y") }} Quittance de loyer — Gestion locative simplifiée</div>
         </footer>
+        <script>
+            const burger = document.getElementById('burgerBtn');
+            const nav    = document.getElementById('mainNav');
+            burger?.addEventListener('click', () => {
+                const open = nav.classList.toggle('open');
+                burger.classList.toggle('active', open);
+                burger.setAttribute('aria-expanded', open);
+            });
+            nav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+                nav.classList.remove('open');
+                burger.classList.remove('active');
+                burger.setAttribute('aria-expanded', false);
+            }));
+        </script>
     </body>
 </html>
