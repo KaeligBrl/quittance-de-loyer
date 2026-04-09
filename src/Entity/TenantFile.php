@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 class TenantFile
 {
     public const CATEGORIES = [
+        'bail_location'        => 'Bail de location',
         'assurance_habitation' => 'Assurance habitation',
         'bulletin_salaire'     => 'Bulletin de salaire',
         'quittance'            => 'Preuve de quittance',
@@ -18,6 +19,7 @@ class TenantFile
     ];
 
     public const REQUIRED_CATEGORIES = [
+        'bail_location',
         'assurance_habitation',
         'bulletin_salaire',
         'contrat_travail',

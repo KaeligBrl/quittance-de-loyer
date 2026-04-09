@@ -92,4 +92,11 @@ class Lease
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        $property = $this->property?->getTitle() ?? 'Bien inconnu';
+        $start = $this->startDate->format('d/m/Y');
+        return sprintf('%s — %s€/mois (dès le %s)', $property, $this->rentAmount, $start);
+    }
 }
