@@ -94,8 +94,10 @@ class TenantRentReceiptController extends AbstractController
         $content = $this->pdfService->generate($receipt, $owner);
 
         return new Response($content, 200, [
-            'Content-Type'        => 'application/pdf',
-            'Content-Disposition' => 'attachment; filename="quittance-'.$receipt->getNumber().'.pdf"',
+            'Content-Type'              => 'application/octet-stream',
+            'Content-Disposition'       => 'attachment; filename="quittance-'.$receipt->getNumber().'.pdf"',
+            'Content-Transfer-Encoding' => 'binary',
+            'Pragma'                    => 'no-cache',
         ]);
     }
 }
