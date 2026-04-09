@@ -13,6 +13,7 @@ class Payment
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: RentReceipt::class, inversedBy: 'payments')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?RentReceipt $rentReceipt = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
