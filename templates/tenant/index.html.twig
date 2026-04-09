@@ -42,6 +42,9 @@
                     <a href="{{ path('app_tenant_show', {'id': tenant.id}) }}">Voir</a>
                     <a href="{{ path('app_tenant_file_index', {'id': tenant.id}) }}" style="color:var(--primary)">📁 Documents</a>
                     <a href="{{ path('app_tenant_edit', {'id': tenant.id}) }}">Modifier</a>
+                    {% if not tenant.password or tenant.invitationToken %}
+                        <a href="{{ path('app_tenant_resend_invitation', {'id': tenant.id}) }}" style="color:var(--primary)" title="Renvoyer l'email d'invitation">📧 Renvoyer</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
