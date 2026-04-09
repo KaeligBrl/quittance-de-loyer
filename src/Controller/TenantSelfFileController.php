@@ -91,11 +91,13 @@ class TenantSelfFileController extends AbstractController
         $mime  = mime_content_type($path) ?: 'application/octet-stream';
 
         return $this->render('tenant_file/view.html.twig', [
-            'tenant'  => $tenant,
-            'file'    => $file,
-            'isImage' => str_starts_with($mime, 'image/'),
-            'isPdf'   => $mime === 'application/pdf',
-            'fileUrl' => $this->generateUrl('tenant_self_file_inline', ['fileId' => $file->getId()]),
+            'tenant'      => $tenant,
+            'file'        => $file,
+            'isImage'     => str_starts_with($mime, 'image/'),
+            'isPdf'       => $mime === 'application/pdf',
+            'fileUrl'     => $this->generateUrl('tenant_self_file_inline', ['fileId' => $file->getId()]),
+            'downloadUrl' => $this->generateUrl('tenant_self_file_download', ['fileId' => $file->getId()]),
+            'backUrl'     => $this->generateUrl('tenant_self_file_index'),
         ]);
     }
 

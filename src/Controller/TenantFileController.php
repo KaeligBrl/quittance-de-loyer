@@ -84,14 +84,19 @@ class TenantFileController extends AbstractController
         $isPdf   = $mime === 'application/pdf';
 
         return $this->render('tenant_file/view.html.twig', [
-            'tenant'  => $tenant,
-            'file'    => $file,
-            'isImage' => $isImage,
-            'isPdf'   => $isPdf,
-            'fileUrl' => $this->generateUrl('app_tenant_file_download', [
+            'tenant'      => $tenant,
+            'file'        => $file,
+            'isImage'     => $isImage,
+            'isPdf'       => $isPdf,
+            'fileUrl'     => $this->generateUrl('app_tenant_file_inline', [
                 'id'     => $tenant->getId(),
                 'fileId' => $file->getId(),
             ]),
+            'downloadUrl' => $this->generateUrl('app_tenant_file_download', [
+                'id'     => $tenant->getId(),
+                'fileId' => $file->getId(),
+            ]),
+            'backUrl'     => $this->generateUrl('app_tenant_file_index', ['id' => $tenant->getId()]),
         ]);
     }
 
