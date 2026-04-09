@@ -8,17 +8,24 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RegistrationController extends AbstractController
 {
-    #[Route('/inscription', name: 'app_register')]
+    #[Route('/inscription/{token}', name: 'app_register')]
     public function register(
+        string $token,
         Request $request,
         UserPasswordHasherInterface $passwordHasher,
         EntityManagerInterface $entityManager,
+        #[Autowire('%env(REGISTRATION_SECRET)%')] string $registrationSecret,
     ): Response {
+        if (!hash_equals($registrationSecret, $token)) {
+            throw $this->createNotFoundException();
+        }
+
         if ($this->getUser()) {
             return $this->redirectToRoute('owner_dashboard');
         }
