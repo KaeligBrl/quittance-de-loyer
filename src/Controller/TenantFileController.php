@@ -71,6 +71,30 @@ class TenantFileController extends AbstractController
         ]);
     }
 
+    #[Route('/{fileId}/view', name: 'view', methods: ['GET'])]
+    public function view(Tenant $tenant, int $fileId, TenantFileRepository $repo): Response
+    {
+        $file = $repo->find($fileId);
+        if (!$file || $file->getTenant()->getId() !== $tenant->getId()) {
+            throw $this->createNotFoundException();
+        }
+        $path = $this->tenantFilesDirectory . '/' . $tenant->getId() . '/' . $file->getFilename();
+        $mime = mime_content_type($path) ?: 'application/octet-stream';
+        $isImage = str_starts_with($mime, 'image/');
+        $isPdf   = $mime === 'application/pdf';
+
+        return $this->render('tenant_file/view.html.twig', [
+            'tenant'  => $tenant,
+            'file'    => $file,
+            'isImage' => $isImage,
+            'isPdf'   => $isPdf,
+            'fileUrl' => $this->generateUrl('app_tenant_file_download', [
+                'id'     => $tenant->getId(),
+                'fileId' => $file->getId(),
+            ]),
+        ]);
+    }
+
     #[Route('/{fileId}/download', name: 'download', methods: ['GET'])]
     public function download(Tenant $tenant, int $fileId, TenantFileRepository $repo): Response
     {
@@ -81,6 +105,18 @@ class TenantFileController extends AbstractController
         $path = $this->tenantFilesDirectory . '/' . $tenant->getId() . '/' . $file->getFilename();
         return (new BinaryFileResponse($path))
             ->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $file->getOriginalName());
+    }
+
+    #[Route('/{fileId}/inline', name: 'inline', methods: ['GET'])]
+    public function inline(Tenant $tenant, int $fileId, TenantFileRepository $repo): Response
+    {
+        $file = $repo->find($fileId);
+        if (!$file || $file->getTenant()->getId() !== $tenant->getId()) {
+            throw $this->createNotFoundException();
+        }
+        $path = $this->tenantFilesDirectory . '/' . $tenant->getId() . '/' . $file->getFilename();
+        return (new BinaryFileResponse($path))
+            ->setContentDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $file->getOriginalName());
     }
 
     #[Route('/{fileId}/delete', name: 'delete', methods: ['POST'])]

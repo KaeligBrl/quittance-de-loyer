@@ -59,7 +59,8 @@
                         <td>{{ f.uploadedAt|date('d/m/Y H:i') }}</td>
                         <td>
                             <div class="page-actions">
-                                <a href="{{ path('app_tenant_file_download', {'id': tenant.id, 'fileId': f.id}) }}" class="btn-sm">Telecharger</a>
+                                <a href="{{ path('app_tenant_file_view', {'id': tenant.id, 'fileId': f.id}) }}" class="btn-sm" style="border-color:var(--primary);color:var(--primary)">👁 Voir</a>
+                                <a href="{{ path('app_tenant_file_download', {'id': tenant.id, 'fileId': f.id}) }}" class="btn-sm">⬇ Télécharger</a>
                                 <form method="post" action="{{ path('app_tenant_file_delete', {'id': tenant.id, 'fileId': f.id}) }}" style="display:inline" onsubmit="return confirm('Supprimer ?')">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete_file_' ~ f.id) }}">
                                     <button type="submit" class="btn-danger btn-sm">Supprimer</button>
